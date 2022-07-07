@@ -1,8 +1,24 @@
 import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { AppContext } from '../contexts/_context'
+import { AppProps } from 'next/dist/shared/lib/router/router'
+import { useState } from 'react'
+import Cookies from 'js-cookie'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+
+function MyApp({ Component, session, pageProps }: AppProps) {
+  const [user, setUser] = useState();
+  const sharedState = {
+    user, setUser,
+
+  }
+  return (
+    <div className='bg-primary min-h-screen text-white'>
+      <AppContext.Provider value={sharedState}>
+        <Component {...pageProps} />
+      </AppContext.Provider>
+    </div>
+
+  )
 }
 
-export default MyApp
+export default MyApp;

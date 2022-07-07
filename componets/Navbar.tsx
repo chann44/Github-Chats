@@ -1,4 +1,4 @@
-const Login = () => {
+const Navbar = () => {
     return (
         <>
 
@@ -6,4 +6,5 @@ const Login = () => {
     )
 }
 
-export default Login;
+
+export default Navbar;
