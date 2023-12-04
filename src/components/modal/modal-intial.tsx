@@ -54,8 +54,11 @@ export function ModalInitial() {
   const isLoading = form.formState.isSubmitting;
 
   /*
- Replace axios with use swr or react query
-  */
+   *1. Replace axios with use swr or react query
+   *2. allow users to select repository name as server name
+   *3 each issue can be a channel
+   *3 Catagories can also be there like PR channels or issues channels or discussions
+   */
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
