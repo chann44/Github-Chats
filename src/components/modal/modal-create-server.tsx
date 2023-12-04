@@ -28,7 +28,7 @@ import { FileUpload } from "../fileupload";
 import axios from "axios";
 import { BASE_URL, URL } from "@/config/network";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useModal } from "@/hooks/use-modal-store";
 
 const formSchema = z.object({
   name: z
@@ -42,8 +42,7 @@ const formSchema = z.object({
   }),
 });
 
-export function ModalInitial() {
-  const [isMounted, setIsMounted] = useState(false);
+export function ModalCreateServer() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,38 +50,31 @@ export function ModalInitial() {
       imageUrl: "",
     },
   });
+  const { isOpen, type, onClose } = useModal();
   const router = useRouter();
 
+  const isModalOpen = isOpen && type == "createServer";
+
   const isLoading = form.formState.isSubmitting;
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  /*
-   *1. Replace axios with use swr or react query
-   *2. allow users to select repository name as server name
-   *3 each issue can be a channel
-   *3 Catagories can also be there like PR channels or issues channels or discussions
-   */
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await axios.post(`${BASE_URL}${URL.servers}`, values);
       form.reset();
       router.refresh();
-      window.location.reload();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
   }
 
-  if (!isMounted) {
-    return null;
+  function handleClose() {
+    form.reset();
+    onClose();
   }
 
   return (
-    <Dialog open>
+    <Dialog onOpenChange={handleClose} open={isModalOpen}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-center">

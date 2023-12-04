@@ -18,7 +18,7 @@ export default async function Setup() {
   });
 
   if (server) {
-    return redirect(`/servers/${server.id}}`);
+    return redirect(`/servers/${server.id}`);
   }
   return <ModalInitial />;
 }
