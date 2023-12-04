@@ -25,6 +25,9 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FileUpload } from "../fileupload";
+import axios from "axios";
+import { BASE_URL, URL } from "@/config/network";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -46,17 +49,27 @@ export function ModalInitial() {
       imageUrl: "",
     },
   });
+  const router = useRouter();
 
   const isLoading = form.formState.isSubmitting;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  /*
+ Replace axios with use swr or react query
+  */
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await axios.post(`${BASE_URL}${URL.servers}`, values);
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
-    <Dialog open>
+    <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Create Server</Button>
       </DialogTrigger>
