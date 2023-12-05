@@ -31,12 +31,12 @@ export function NavigationItem(props: NavigationItem) {
         />
         <div
           className={cn(
-            "flex mx-3 h-12 w-12 rounded-[24px] group-hover:rounded-[15px] justify-center items-center relative",
+            "flex mx-3 h-12 w-12 rounded-full group-hover:rounded-[15px] justify-center items-center relative",
             serverId === props.id && "bg-primary/10 text-primary rounded-[16px]"
           )}
         >
           <Image
-            className="group-hover:rounded-[16px]"
+            className="group-hover:rounded-[16px] rounded-full"
             src={props.imageUrl}
             alt="Channel Image"
             fill
