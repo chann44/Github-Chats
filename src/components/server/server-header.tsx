@@ -11,6 +11,7 @@ import {
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import { LucideChevronDown } from "lucide-react";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;
@@ -18,6 +19,7 @@ interface ServerHeaderProps {
 }
 
 export function ServerHeader(props: ServerHeaderProps) {
+  const { onOpen } = useModal();
   const isAdmin = props.role == "ADMIN";
   const isModarator = props.role == "MODRATOR" || isAdmin;
   return (
@@ -33,7 +35,13 @@ export function ServerHeader(props: ServerHeaderProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 p-2 bg-black text-sm font-medium space-y-2">
-          {isModarator && <DropdownMenuItem>Invite People</DropdownMenuItem>}
+          {isModarator && (
+            <DropdownMenuItem
+              onClick={() => onOpen("invite", { server: props.server })}
+            >
+              Invite People
+            </DropdownMenuItem>
+          )}
           {isAdmin && <DropdownMenuItem>Server Settings</DropdownMenuItem>}
           {isAdmin && <DropdownMenuItem>Manage Members</DropdownMenuItem>}
           {isModarator && <DropdownMenuItem>Create Channels</DropdownMenuItem>}
